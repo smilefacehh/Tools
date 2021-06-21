@@ -12,21 +12,17 @@ def read_polygon(file):
     points = []
     with open(file, 'r') as f:
         for line in f.readlines():
-            line_arr = line.strip().split(',')
-            points.append((float(line_arr[0]), float(line_arr[1])))
+            line = line.strip()
+            if line is not '':
+                line_arr = line.split(',')
+                points.append((float(line_arr[0]), float(line_arr[1])))
     return points
 
-def plot_polygon(points):
+def plot_polygon(points, save_png_file):
     x = np.array(points)[:,0]
     y = np.array(points)[:,1]
     
-    w = max(abs(np.max(x)), abs(np.min(x)), abs(np.max(y)), abs(np.min(y)))
-    w *= 1.2
-
     plt.plot(x, y, marker='.')
-    # plt.xlim((-w, w))
-    # plt.ylim((-w, w))
-
     ax = plt.gca()
     ax.set_aspect(1)
     ax.spines['right'].set_visible(False)
@@ -38,10 +34,9 @@ def plot_polygon(points):
 
     plt.legend()
     plt.title('polygon')
-
-    plt.savefig('polygon.png')
+    plt.savefig(save_png_file)
 
 
 if __name__ == "__main__":
     points = read_polygon('polygon.txt')
-    plot_polygon(points)
+    plot_polygon(points, 'polygon.png')
